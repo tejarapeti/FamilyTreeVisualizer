@@ -4,8 +4,20 @@
 *FamilyTreeVisualizer* takes the name of the person whose family tree has to be printed, the no of levels of the tree  to be printed, the type of the tree ( Eg: Successor Tree, which shows all successors(son, grand daughter etc..) of the given person etc..), the format in which the tree has to be visualized ( Eg: Grahical Text visualization ( similar to unix directory tree structure) etc..) as inputs and returns the visualization of the family tree of the person in the requested visualization format.
 Currently the application supports only Successor Tree Type and Text visualization but can be easily extended to other tree types and visualization formats. In the Text visualization of the family tree each node is of the form:
 <person>|<spouse>(<relation with person whose family tree is being built>)
-Eg: Chris|Samantha(GRAND SON)
+Eg 1: Chris|Samantha(GRAND SON)
 where Chris is the person, Samantha is the spouse of the person and "GRAND SON" is the relation of the Chris with the person whose famiy tree is being built.
+spouse name and relation name are optional and are not printed if not available.
+
+### Application Flow
+1. The flow of the application starts from FamilyTreeService.
+2. FamilyTreeService fetches appropriate FamilyTreeBuilder and FamilyTreeVisualizer as per user's request.
+3. FamilyTreeService calls FamilyTreeGenerationManager with appropriate FamilyTreeBuilder and FamilyTreeVisualizer.
+4. FamilyTreeGenerationManager calls FamilyTreeBuilder to get the requested family tree.
+5. FamilyTreeBuilder interacts with FamilyTreeDAO, which fetches required data from InMemoryGraphDB .
+6. FamilyTreeBuilder builds a Family Tree, which is an n-ary tree and returns it to FamilyTreeGenerationManager
+7. FamilyTreeGenerationManager passes this Family Tree to FamilyTreeVisualizer.
+8. FamilyTreeVisualizer parses the tree and creates a visualization of it and returns to FamilyTreeGenerationManager.
+9. FamilyTreeGenerationManager return appropriate respose to FamilyTreeService, which build the response object and returns to the user.
 
 ### How to use it?
 Use the main method written in FamilyTreeServiceImpl class for generating family trees with sample data. The sample data is available in initializeDBWithTestData method present in InMemoryGraphDB.
@@ -45,6 +57,7 @@ Mike|Sandra
 
 Process finished with exit code 0
 ```
+
 
 ### How to enter sample data in the in-memory db for testing?
 
