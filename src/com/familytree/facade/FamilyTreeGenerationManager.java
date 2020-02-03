@@ -1,6 +1,8 @@
 package com.familytree.facade;
 
 import com.familytree.dataobjects.FamilyTreeNode;
+import com.familytree.exception.DataUnavailableException;
+import com.familytree.exception.InvalidInputException;
 import com.familytree.treebuilder.FamilyTreeBuilder;
 import com.familytree.util.FamilyTreeCommonUtil;
 import com.familytree.visualizer.FamilyTreeVisualizer;
@@ -15,7 +17,7 @@ public class FamilyTreeGenerationManager {
         this.familyTreeVisualizer = familyTreeVisualizer;
     }
 
-    public String getFamilyTreeVisualization(final String personId,final int level){
+    public String getFamilyTreeVisualization(final String personId,final int level) throws DataUnavailableException, InvalidInputException {
         String visualization = null;
 
         FamilyTreeNode familyTreeRoot = familyTreeBuilder.buildFamilyTree(personId, level);

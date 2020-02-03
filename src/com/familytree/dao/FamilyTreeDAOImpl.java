@@ -4,7 +4,10 @@ import com.familytree.database.InMemoryGraphDB;
 import com.familytree.dataobjects.FamilyMember;
 import com.familytree.dataobjects.Person;
 import com.familytree.dataobjects.Relation;
+import com.familytree.exception.DataUnavailableException;
+import com.familytree.exception.InvalidInputException;
 
+import javax.xml.crypto.Data;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,8 +18,7 @@ public class FamilyTreeDAOImpl implements FamilyTreeDAO {
         graphDBInstance = InMemoryGraphDB.getInstance();
     }
 
-    @Override
-    public boolean isPersonAvailable(String personId){
+    private boolean isPersonAvailable(String personId) {
         if(personId == null || personId.isEmpty()){
             return false;
         }
@@ -24,11 +26,14 @@ public class FamilyTreeDAOImpl implements FamilyTreeDAO {
     }
 
     @Override
-    public Person getPerson(String personId) {
-        if(personId == null || personId.isEmpty() || !isPersonAvailable(personId)){
-            return null;
+    public Person getPerson(String personId) throws InvalidInputException, DataUnavailableException {
+        if(personId == null || personId.isEmpty()){
+            throw new InvalidInputException("person id cannot be null or empty");
         }
-        return graphDBInstance.getPersonsMap().get(personId);
+        if(!isPersonAvailable(personId)){
+            throw new DataUnavailableException("The person " + personId + " does not exist");
+        }
+            return graphDBInstance.getPersonsMap().get(personId);
     }
 
     @Override
@@ -37,7 +42,6 @@ public class FamilyTreeDAOImpl implements FamilyTreeDAO {
         if(personId == null || personId.isEmpty() || !isPersonAvailable(personId)){
             return immediateFamilyMembers;
         }
-
 
         List<Relation> relationsOfPerson = graphDBInstance.getRelationsMap().get(personId);
         if(relationsOfPerson != null){

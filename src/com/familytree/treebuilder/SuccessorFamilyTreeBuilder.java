@@ -8,6 +8,8 @@ import com.familytree.dataobjects.FamilyMember;
 import com.familytree.dataobjects.FamilyTreeNode;
 import com.familytree.dataobjects.Person;
 import com.familytree.dataobjects.Relation;
+import com.familytree.exception.DataUnavailableException;
+import com.familytree.exception.InvalidInputException;
 
 import java.util.*;
 
@@ -20,8 +22,8 @@ public class SuccessorFamilyTreeBuilder implements FamilyTreeBuilder {
     }
 
     @Override
-    public FamilyTreeNode buildFamilyTree(final String personId, final int level) {
-        if(personId == null || personId.isEmpty() || level <= 0 || !familyTreeDAO.isPersonAvailable(personId)){
+    public FamilyTreeNode buildFamilyTree(final String personId, final int level) throws DataUnavailableException, InvalidInputException {
+        if(personId == null || personId.isEmpty() || level <= 0){
             //throw exception
             return null;
         }

@@ -5,6 +5,7 @@ import com.familytree.constants.TreeVisualizationFormat;
 import com.familytree.dao.FamilyTreeDAOImpl;
 import com.familytree.dataobjects.FamilyTreeVisualizerRequest;
 import com.familytree.dataobjects.FamilyTreeVisualizerResponse;
+import com.familytree.exception.DataUnavailableException;
 import com.familytree.exception.InvalidInputException;
 import com.familytree.facade.FamilyTreeGenerationManager;
 import com.familytree.factory.FamilyTreeBuilderFactory;
@@ -21,11 +22,20 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
         final FamilyTreeVisualizer familyTreeVisualizer = FamilyTreeVisualizerFactory.getInstance(request.getVisualizationFormat());
 
         final FamilyTreeGenerationManager familyTreeGenerationManager = new FamilyTreeGenerationManager(familyTreeBuilder,familyTreeVisualizer);
-        final String resultantView = familyTreeGenerationManager.getFamilyTreeVisualization(request.getPersonId(),request.getLevel());
-
+        String resultantView = null;
         final FamilyTreeVisualizerResponse response = new FamilyTreeVisualizerResponse();
+        try {
+            resultantView = familyTreeGenerationManager.getFamilyTreeVisualization(request.getPersonId(),request.getLevel());
+        } catch (DataUnavailableException dataUnavailableException) {
+            response.setVisualizationFormat(request.getVisualizationFormat());
+            response.setResultantView(null);
+            response.setMessage(dataUnavailableException.getMessage());
+            return response;
+        }
+
         response.setVisualizationFormat(request.getVisualizationFormat());
         response.setResultantView(resultantView);
+        response.setMessage("SUCCESS");
         return response;
     }
 
@@ -51,11 +61,12 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
         FamilyTreeServiceImpl service = new FamilyTreeServiceImpl();
         FamilyTreeVisualizerRequest request = new FamilyTreeVisualizerRequest();
         request.setPersonId("Mike");
-        request.setLevel(6);
+        request.setLevel(5);
         request.setTreeType(FamilyTreeType.SUCCESSOR);
         request.setVisualizationFormat(TreeVisualizationFormat.TEXT);
         try {
             FamilyTreeVisualizerResponse response = service.getFamilyTree(request);
+            System.out.println(response.getMessage());
             System.out.println(response.getResultantView());
         } catch (InvalidInputException e) {
             e.printStackTrace();
