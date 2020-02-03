@@ -19,8 +19,8 @@ public class FamilyTreeGenerationManager {
         String visualization = null;
 
         FamilyTreeNode familyTreeRoot = familyTreeBuilder.buildFamilyTree(personId, level);
-        FamilyTreeCommonUtil util = new FamilyTreeCommonUtil();
-        util.printFamilyTreeLevelOrder(familyTreeRoot);
+        //FamilyTreeCommonUtil util = new FamilyTreeCommonUtil();
+        //util.printFamilyTreeLevelOrder(familyTreeRoot);
         if(familyTreeRoot != null){
             visualization = familyTreeVisualizer.generateFamilyTreeVisualization(familyTreeRoot);
         }
