@@ -1,5 +1,6 @@
 package com.familytree.service;
 
+import com.familytree.constants.FamilyTreeServiceConstants;
 import com.familytree.constants.FamilyTreeType;
 import com.familytree.constants.TreeVisualizationFormat;
 import com.familytree.dao.FamilyTreeDAOImpl;
@@ -35,7 +36,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
 
         response.setVisualizationFormat(request.getVisualizationFormat());
         response.setResultantView(resultantView);
-        response.setMessage("SUCCESS");
+        response.setMessage(FamilyTreeServiceConstants.SUCCESS);
         return response;
     }
 
@@ -43,7 +44,7 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
         if(request == null){
             throw new InvalidInputException("request object cannot be null");
         }
-        if(request.getPersonId() == null || request.getPersonId().length() == 0){
+        if(request.getPersonId() == null || request.getPersonId().isEmpty()){
             throw new InvalidInputException("personId cannot be null or empty");
         }
         if(request.getLevel() <= 0){
@@ -60,8 +61,11 @@ public class FamilyTreeServiceImpl implements FamilyTreeService {
     public static void main(String[] args) {
         FamilyTreeServiceImpl service = new FamilyTreeServiceImpl();
         FamilyTreeVisualizerRequest request = new FamilyTreeVisualizerRequest();
+        /*request.setPersonId("Emily");
+        request.setLevel(2);
+        request.setTreeType(FamilyTreeType.SIBLING);*/
         request.setPersonId("Mike");
-        request.setLevel(5);
+        request.setLevel(6);
         request.setTreeType(FamilyTreeType.SUCCESSOR);
         request.setVisualizationFormat(TreeVisualizationFormat.TEXT);
         try {

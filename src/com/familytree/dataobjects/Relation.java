@@ -4,7 +4,7 @@ import com.familytree.constants.RelationName;
 import com.familytree.constants.RelationType;
 
 public class Relation {
-    private int relationId;
+    //private int relationId;
     private String firstPersonId;
     private String secondPersonId;
     private RelationName relationName;

@@ -15,4 +15,6 @@ public class FamilyTreeServiceConstants {
                     RelationName.SIBLING, RelationType.PARALLEL,
                     RelationName.SPOUSE, RelationType.PARALLEL);
 
+    public static final String SUCCESS = "SUCCESS";
+    public static final String SIBLINGS = "SIBLINGS";
 }

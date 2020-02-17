@@ -7,7 +7,6 @@ import com.familytree.dataobjects.Relation;
 import com.familytree.exception.DataUnavailableException;
 import com.familytree.exception.InvalidInputException;
 
-import javax.xml.crypto.Data;
 import java.util.LinkedList;
 import java.util.List;
 
